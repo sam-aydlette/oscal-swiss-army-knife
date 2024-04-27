@@ -1,5 +1,5 @@
 import argparse
-from commands import roles, components
+from commands import roles, components, poams
 from core import core_functionality
 
 def main():
@@ -14,6 +14,10 @@ def main():
     # Add the 'components' command
     components_parser = subparsers.add_parser("components", help="List the components from the SSP")
     components_parser.set_defaults(func=components.list_components)
+
+    # Add the 'poams' command
+    poams_parser = subparsers.add_parser("poams", help="List the POAM items from the JSON file")
+    poams_parser.set_defaults(func=poams.list_poams)
 
 
     args = parser.parse_args()
