@@ -1,5 +1,5 @@
 import argparse
-from commands import roles, components, poams
+from commands import roles, components, poams, activities
 from core import core_functionality
 
 def main():
@@ -18,6 +18,10 @@ def main():
     # Add the 'poams' command
     poams_parser = subparsers.add_parser("poams", help="List the POAM items from the JSON file")
     poams_parser.set_defaults(func=poams.list_poams)
+
+    # Add the 'activities' command
+    activities_parser = subparsers.add_parser("activities", help="List the Assessor Activity items from the JSON file")
+    activities_parser.set_defaults(func=activities.list_activities)
 
 
     args = parser.parse_args()
