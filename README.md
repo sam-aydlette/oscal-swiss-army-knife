@@ -1,7 +1,22 @@
 # oscal-cli
 a CLI tool that allows users to manipulate OSCAL formatted data by running commands in the terminal.
 
-To use the tool, first set up your local python environment, then run:
+###Prerequisites
+Python 3
+Git 
+
+To use the tool, first set up your local environment:
+
+>pip install virtualenv
+>source env/bin/activate
+>pip install -r requirements.txt
+
+Clone the repository to a directory:
+>git clone https://path-to-github-repo
+
+
+###Instructions
+To use the OSCAL CLI, run:
 
 python main.py [path/to/oscal_file] [command]
 
