@@ -12,7 +12,7 @@ To use the tool, first set up your local environment:
 >pip install -r requirements.txt
 
 Clone the repository to a directory:
->git clone https://path-to-github-repo
+>git clone https : // path/to/github-repo
 
 
 ### Instructions  
