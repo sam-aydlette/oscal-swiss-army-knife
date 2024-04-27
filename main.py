@@ -13,8 +13,16 @@ def main():
     args = parser.parse_args()
 
     # Load the OSCAL SSP dictionary
-    oscal_ssp = core_functionality.load_ssp("docs/ifa_ssp-example.json")
 
+    # Prompt the user for the file path
+    file_path = input("Enter the path to the JSON file: ")
+
+    # Load the OSCAL SSP dictionary
+    try:
+        oscal_ssp = core_functionality.load_ssp(file_path)
+    except FileNotFoundError:
+        print(f"File not found: {file_path}")
+        return
     if hasattr(args, "func"):
         args.func(oscal_ssp)
     else:
