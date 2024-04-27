@@ -2,14 +2,14 @@
 a CLI tool that allows users to manipulate OSCAL formatted data by running commands in the terminal.
 
 ### Prerequisites  
-Python 3
-Git 
+Python 3  
+Git  
 
 To use the tool, first set up your local environment:
 
->pip install virtualenv
->source env/bin/activate
->pip install -r requirements.txt
+>pip install virtualenv  
+>source env/bin/activate  
+>pip install -r requirements.txt  
 
 Clone the repository to a directory:
 >git clone https : // path/to/github-repo
