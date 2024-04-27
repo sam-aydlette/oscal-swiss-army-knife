@@ -5,7 +5,7 @@ To use the tool, run:
 
 python main.py [path/to/oscal_file] [command]
 
-Valid commands:
+Valid commands:  
 -roles  
 -components  
 -poams  
