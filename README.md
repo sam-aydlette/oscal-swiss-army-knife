@@ -1,5 +1,5 @@
 # oscal-cli
-a CLI tool that allows users to manipulate OSCAL formatted data by running commands in the terminal.
+a CLI tool that allows users to manipulate OSCAL formatted data by running commands in the terminal.  This is the Swiss Army Knife of OSCAL tools!
 
 ### Prerequisites  
 Python 3  
