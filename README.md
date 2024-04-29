@@ -18,12 +18,16 @@ Clone the repository to a directory:
 ### Instructions  
 To use the OSCAL CLI, run:
 
-python main.py [path/to/oscal_file] [command]
+python main.py [docs/oscal_file.json] [command]
 
 Valid commands:  
--roles  
--components  
--poams  
--activities  
+>roles    
+The roles command lists the roles and responsibilities for the system.    
+>components  
+The components command lists the inventory components for the system.  
+>poams  
+The poams command lists the open POA&M items for the system.    
+>activities  
+The activities command lists the activities performed in the Security Assessment by the 3PAO.  
 
 REMINDER:  If you wish to use the poams command, you must use a valid OSCAL POAM file.  For the components and roles command, use an OSCAL SSP file.  For the activities command, use the OSCAL Assessment Plan file.  The file type is distinguished by naming convention.
