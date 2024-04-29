@@ -11,14 +11,14 @@ To use the tool, first set up your local environment:
 >source env/bin/activate  
 >pip install -r requirements.txt  
 
-Clone the repository to a directory:
->git clone https : // path/to/github-repo
+Then, clone the repository to your working directory:
+> git clone https : // github/path/to/repo
 
 
 ### Instructions  
 To use the OSCAL CLI, run:
 
-python main.py [docs/oscal_file.json] [command]
+>python main.py [docs/oscal_file.json] [command]  
 
 Valid commands:  
 >roles    
