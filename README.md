@@ -1,4 +1,4 @@
-# oscal-cli
+# oscal-swiss-army-knife
 a CLI tool that allows users to manipulate OSCAL formatted data by running commands in the terminal.  This is the Swiss Army Knife of OSCAL tools!
 
 ### Prerequisites  
@@ -16,7 +16,7 @@ Then, clone the repository to your working directory:
 
 
 ### Instructions  
-To use the OSCAL CLI, run:
+To use the OSCAL Swiss Army Knife CLI, run:
 
 >python main.py [docs/oscal_file.json] [command]  
 
