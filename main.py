@@ -1,5 +1,5 @@
 import argparse
-from commands import roles, components, poams, activities
+from commands import roles, components, poams, activities, portscheck
 from core import core_functionality
 
 def main():
@@ -22,6 +22,11 @@ def main():
     # Add the 'activities' command
     activities_parser = subparsers.add_parser("activities", help="List the Assessor Activity items from the JSON file")
     activities_parser.set_defaults(func=activities.list_activities)
+
+    # Add the 'portscheck' command
+    #portscheck_parser = subparsers.add_parser("portscheck", help="Compare the open ports found in the scans to the ports listed in the SSP")
+    #portscheck_parser.set_defaults(func=portscheck.list_portscheck)
+
 
 
     args = parser.parse_args()
