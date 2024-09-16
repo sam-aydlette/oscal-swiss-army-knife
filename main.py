@@ -24,22 +24,22 @@ def main():
     activities_parser.set_defaults(func=activities.list_activities)
 
     # Add the 'portscheck' command
-    #portscheck_parser = subparsers.add_parser("portscheck", help="Compare the open ports found in the scans to the ports listed in the SSP")
-    #portscheck_parser.set_defaults(func=portscheck.list_portscheck)
+    portscheck_parser = subparsers.add_parser("portscheck", help="Compare the open ports found in the scans to the ports listed in the SSP")
+    portscheck_parser.set_defaults(func=portscheck.portscheck)
 
 
 
     args = parser.parse_args()
 
-    # Load the OSCAL SSP dictionary
+    # Load the OSCAL dictionary
     try:
-        oscal_ssp = core_functionality.load_ssp(args.file_path)
+        oscal_file = core_functionality.load_file(args.file_path)
     except FileNotFoundError:
         print(f"File not found: {args.file_path}")
         return
 
     if hasattr(args, "func"):
-        args.func(oscal_ssp)
+        args.func(oscal_file)
     else:
         parser.print_help()
 

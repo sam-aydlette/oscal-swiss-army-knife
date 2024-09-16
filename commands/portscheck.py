@@ -1,29 +1,23 @@
-import csv
-import sys
+import xml.etree.ElementTree as ET
 
-def read_csv(filename):
-    with open(filename, 'r') as file:
-        reader = csv.reader(file)
-        return set(int(row[0]) for row in reader)
+def portscheck(oscal_file):
+    #inventory_components = oscal_file["system-security-plan"]["system-implementation"]["inventory-items"]
 
-def compare_ports(scan_ports, ssp_ports):
-    return list(scan_ports - ssp_ports)
+    # Parse the XML file
+    tree = ET.parse("docs/scan_example.xml")
+    root = tree.getroot()
 
-def list_compare():
-    try:
-        scan_ports = read_csv('scan-ports.csv')
-        ssp_ports = read_csv('ssp-ports.csv')
-    except FileNotFoundError as e:
-        print(f"Error: {e.filename} not found. Make sure both CSV files are in the same directory as the script.")
-        sys.exit(1)
-    except ValueError:
-        print("Error: Invalid data in CSV files. Ensure all entries are integers.")
-        sys.exit(1)
-
-    different_ports = compare_ports(scan_ports, ssp_ports)
-
-    if different_ports:
-        print("Ports in scan-ports.csv that are not in ssp-ports.csv:")
-        print(", ".join(map(str, sorted(different_ports))))
+    # Find the TARGET preference
+    target_element = root.find('.//preference[name="TARGET"]/value')
+    
+    if target_element is not None:
+        # Split the comma-separated list of hostnames
+        hostnames = target_element.text.split(',')
+        # Remove any leading/trailing whitespace from each hostname
+        hostnames = [hostname.strip() for hostname in hostnames]
+        print("Hostnames found:")
+        for hostname in hostnames:
+            print(hostname)
     else:
-        print("All ports in scan-ports.csv are present in ssp-ports.csv.")
+        print("No open ports found in the scans")
+ 

@@ -1,5 +1,5 @@
-def list_poams(oscal_ssp):
-    poams = oscal_ssp["plan-of-action-and-milestones"]["poam-items"]
+def list_poams(oscal_file):
+    poams = oscal_file["plan-of-action-and-milestones"]["poam-items"]
     print(f"Total number of POAM items: {len(poams)}")
     print()
 
