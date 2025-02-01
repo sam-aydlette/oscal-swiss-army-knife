@@ -1,83 +1,90 @@
-# oscal-swiss-army-knife
-a CLI tool that allows users to manipulate OSCAL formatted data by running commands in the terminal.  This is the Swiss Army Knife of OSCAL tools!
+# OSCAL Swiss Army Knife
 
-### Prerequisites  
-Python 3  
-Git  
+A command-line interface (CLI) tool for analyzing and manipulating OSCAL (Open Security Controls Assessment Language) formatted data.
 
-To use the tool, first set up your local environment:
+## Prerequisites
 
->pip install virtualenv  
->source env/bin/activate  
->pip install -r requirements.txt  
+- Python 3.x
+- Git
 
-Then, clone the repository to your working directory:
-> git clone https : // github/path/to/repo
+## Installation
 
+1. Create and activate a virtual environment:
+```bash
+python -m venv env
+source env/bin/activate  # On Unix/macOS
+env\Scripts\activate     # On Windows
+```
 
-### Instructions  
-To use the OSCAL Swiss Army Knife CLI, run:
+2. Clone the repository:
+```bash
+git clone https://github.com/path/to/repo
+```
 
->python main.py [docs/oscal_file.json] [command]  
+3. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
 
-Valid commands:  
->roles
+## Usage
 
-The roles command lists the roles and responsibilities for the system.  It is derived from the SSP.   
+Basic command syntax:
+```bash
+python main.py <oscal_file> <command> [options]
+```
 
->components
+### Available Commands
 
-The components command lists the Inventory components for the system.  It is derived from the SSP
+| Command | Description | Required File Type |
+|---------|-------------|-------------------|
+| `roles` | Lists system roles and responsibilities | SSP |
+| `components` | Lists system inventory components | SSP |
+| `poams` | Lists open Plan of Action & Milestones items | POA&M |
+| `activities` | Lists 3PAO assessment activities | SAP |
+| `security-levels` | Analyzes security impact levels and information types | SSP |
+| `user-privileges` | Lists user roles and authorized privileges | SSP |
+| `implemented-controls` | Analyzes security control implementations | SSP |
+| `portscheck` | Analyzes open ports and findings from scan results | Scan XML |
+| `visualize-components` | Generates component visualization report | SSP |
+| `generate-poam` | Creates POA&M from scan findings | POA&M/Scan XML |
 
->poams
+### Options
 
-The poams command lists the open POA&M items for the system.  It is derived from the POA&M  
+- `--debug`: Enable debug logging
+- `--scan <file>`: Path to scan file (required for generate-poam command)
 
->activities
+### Examples
 
-The activities command lists the activities to be performed by the 3PAO.  It is derived from the SAP.  
+List system roles:
+```bash
+python main.py system_security_plan.json roles
+```
 
->security-levels
+Generate POA&M from scan:
+```bash
+python main.py existing_poam.json generate-poam --scan scan_results.xml
+```
 
-The security-levels command analyzes and displays the security impact levels and information types defined in the SSP.
+### Viewing Reports
 
->user-privileges
+To view generated reports:
+```bash
+firefox reports/oscal_report_*.html
+```
 
-The user-privileges command lists all users, their roles, and authorized privileges as defined in the SSP.
+## Development Guide
 
->implemented-controls
+### Creating New Commands
 
-The implemented-controls command analyzes and displays details about security control implementations defined in the SSP.
-
->portscheck
-
-The portscheck commmand lists all components targeted in the scan, open ports, and findings. It uses the scan xml file.
-
->visualize-components
-
-The visualize-components command generates a report and graphic representing the OSCAL data.
-
->generate-poam
-
-The generate-poam command generates a POA&M, deriving entries from previous POA&Ms that remain open and new scan findings. It requires an argument --scan
-
-
-REMINDER:  If you wish to use the poams command, you must use a valid OSCAL POAM file.  For the components and roles command, use an OSCAL SSP file.  For the activities command, use the OSCAL Assessment Plan file.  The file type is distinguished by naming convention.
-
-### To Open The Report
-From the terminal, run:
-
->firefox reports/oscal_report_*.html
-
-### To Create New Commands
-1. Create a new .py file in the /commands directory with your command function:
+1. Create a new .py file in the `/commands` directory with your command function:
 ```python
 # commands/mynewcommand.py
 def list_something(oscal_file):
     # Your command logic here
     print("Command output...")
 ```
-2. Update main.py to include your command:
+
+2. Update `main.py` to include your command:
 ```python
 def setup_registry():
     registry = CommandRegistry()
@@ -88,11 +95,11 @@ def setup_registry():
     return registry
 ```
 
-2. Create your command class in commands/commands.py:
-   - Inherit from the Command base class
-   - Implement the validate() method to check if the command can run with the given OSCAL file
-   - Implement the execute() method with your command's functionality
-   
+3. Create your command class in `commands/commands.py`:
+   * Inherit from the Command base class
+   * Implement the validate() method to check if the command can run with the given OSCAL file
+   * Implement the execute() method with your command's functionality
+
 Example:
 ```python
 class MyNewCommand(Command):
@@ -104,12 +111,10 @@ class MyNewCommand(Command):
         print("Executing new command...")
 ```
 
-Remember to add any new dependencies to requirements.txt if your command needs additional Python packages.
+**Note:** Remember to add any new dependencies to `requirements.txt` if your command needs additional Python packages.
 
 ## License
 
-This work is licensed under a [Creative Commons Attribution 4.0 International License](http://creativecommons.org/licenses/by/4.0/).
+Licensed under [Creative Commons Attribution 4.0 International License](http://creativecommons.org/licenses/by/4.0/).
 
-![CC BY 4.0][cc-by-shield]
-
-[cc-by-shield]: https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg
+![CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)
