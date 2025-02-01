@@ -21,21 +21,13 @@ To use the OSCAL Swiss Army Knife CLI, run:
 >python main.py [docs/oscal_file.json] [command]  
 
 Valid commands:  
->roles    
+>roles //The roles command lists the roles and responsibilities for the system.  It is derived from the SSP.   
 
-The roles command lists the roles and responsibilities for the system.  It is derived from the SSP.   
+>components //The components command lists the Inventory components for the system.  It is derived from the SSP
 
->components  
+>poams //The poams command lists the open POA&M items for the system.  It is derived from the POA&M  
 
-The components command lists the Inventory components for the system.  It is derived from the SSP
-
->poams  
-
-The poams command lists the open POA&M items for the system.  It is derived from the POA&M  
-
->activities  
-
-The activities command lists the activities to be performed by the 3PAO.  It is derived from the SAP.  
+>activities //The activities command lists the activities to be performed by the 3PAO.  It is derived from the SAP.  
 
 
 REMINDER:  If you wish to use the poams command, you must use a valid OSCAL POAM file.  For the components and roles command, use an OSCAL SSP file.  For the activities command, use the OSCAL Assessment Plan file.  The file type is distinguished by naming convention.
@@ -45,11 +37,25 @@ From the terminal, run:
 
 >firefox reports/oscal_report_*.html
 
-### To Create New Commands (Old Method) 
-To create new commands in the OSCAL Swiss Army Knife CLI, you must update the following files:
-- In "main.py" update the main function with a new command argument and import the command
-- In /commands directory create a new .py file with the script you want to execute
-- Place any documents in the docs folder that are required for the command to run
+### To Create New Commands (Legacy Method) 
+1. Create a new .py file in the /commands directory with your command function:
+```python
+# commands/mynewcommand.py
+def list_something(oscal_file):
+    # Your command logic here
+    print("Command output...")
+```
+2. Update main.py to include your command:
+```python
+def setup_registry():
+    registry = CommandRegistry()
+    
+    # Add your new command with appropriate validator
+    registry.register_legacy("mynewcommand", mynewcommand.list_something, validate_ssp)
+    
+    return registry
+```
+
 
 ### To Create New Commands (New Method)
 To create new commands using the command handler system, follow these steps:
@@ -59,18 +65,18 @@ To create new commands using the command handler system, follow these steps:
    - Implement the validate() method to check if the command can run with the given OSCAL file
    - Implement the execute() method with your command's functionality
    
-   Example:
-   ```
-   class MyNewCommand(Command):
-       def validate(self, oscal_file: Dict[str, Any]) -> bool:
-           return "required-section" in oscal_file
-           
-       def execute(self, oscal_file: Dict[str, Any]) -> None:
-           # Your command logic here
-           print("Executing new command...")
-    ```
-2. Register your command in the setup_registry() function in main.py:
+Example:
+```python
+class MyNewCommand(Command):
+    def validate(self, oscal_file: Dict[str, Any]) -> bool:
+        return "required-section" in oscal_file
+        
+    def execute(self, oscal_file: Dict[str, Any]) -> None:
+        # Your command logic here
+        print("Executing new command...")
 ```
+2. Register your command in the setup_registry() function in main.py:
+```python
 def setup_registry():
     registry = CommandRegistry()
     # Add your new command
