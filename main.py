@@ -1,38 +1,84 @@
 import argparse
 import logging
+from typing import Dict, Any, Optional, Callable
 from core import core_functionality
-from commands import roles, components, poams, activities, portscheck, implemented_controls, security_levels, user_privileges
-from commands.commands import (
-    CommandRegistry, 
-    NewRolesCommand,
-    ComponentVisualizerCommand,
-    validate_ssp,
-    validate_poam,
-    validate_sap,
-    validate_ssp_metadata
+from commands import (
+    roles, 
+    components, 
+    poams, 
+    activities, 
+    portscheck, 
+    implemented_controls, 
+    security_levels, 
+    user_privileges, 
+    generate_poam,
+    visualize_components
 )
 
+class CommandRegistry:
+    """Registry for command functions with validation"""
+    
+    def __init__(self):
+        self._commands: Dict[str, tuple[Callable, Optional[Callable]]] = {}
+        
+    def register(self, name: str, func: Callable, validator: Optional[Callable] = None) -> None:
+        """Register a command function with optional validator"""
+        self._commands[name] = (func, validator)
+        
+    def get_command(self, name: str) -> Optional[tuple[Callable, Optional[Callable]]]:
+        """Get registered command and validator by name"""
+        return self._commands.get(name)
+        
+    def list_commands(self) -> list:
+        """List all registered command names"""
+        return list(self._commands.keys())
+
+# Validation functions
+def validate_ssp(oscal_file: Dict[str, Any]) -> bool:
+    """Validate SSP file type"""
+    return "system-security-plan" in oscal_file
+
+def validate_poam(oscal_file: Dict[str, Any]) -> bool:
+    """Validate POAM file type"""
+    return "plan-of-action-and-milestones" in oscal_file
+
+def validate_sap(oscal_file: Dict[str, Any]) -> bool:
+    """Validate SAP file type"""
+    return "assessment-plan" in oscal_file
+
+def validate_ssp_metadata(oscal_file: Dict[str, Any]) -> bool:
+    """Validate SSP metadata exists"""
+    return "system-security-plan" in oscal_file and "metadata" in oscal_file["system-security-plan"]
+
+
+def validate_poam_generator(oscal_file: Dict[str, Any]) -> bool:
+    """Validate POAM generator requirements"""
+    return validate_poam(oscal_file)
+
 def setup_registry():
-    """Set up command registry with both old and new commands"""
+    """Set up command registry with commands"""
     registry = CommandRegistry()
     
-    # Register the new-style commands
-    registry.register("new-roles", NewRolesCommand())
-    registry.register("visualize-components", ComponentVisualizerCommand())
-    
-    # Register legacy commands with appropriate validators
-    registry.register_legacy("roles", roles.list_roles, validate_ssp)
-    registry.register_legacy("components", components.list_components, validate_ssp)
-    registry.register_legacy("poams", poams.list_poams, validate_poam)
-    registry.register_legacy("activities", activities.list_activities, validate_sap)
-    registry.register_legacy("security-levels", security_levels.analyze_security_levels, validate_ssp_metadata)
-    registry.register_legacy("user-privileges", user_privileges.analyze_user_privileges, validate_ssp_metadata)
-    registry.register_legacy("implemented-controls", implemented_controls.analyze_implemented_controls, validate_ssp)
-    
+    registry.register("visualize-components", visualize_components.visualize_components, validate_ssp)    
+    registry.register("roles", roles.list_roles, validate_ssp)
+    registry.register("components", components.list_components, validate_ssp)
+    registry.register("poams", poams.list_poams, validate_poam)
+    registry.register("activities", activities.list_activities, validate_sap)
+    registry.register("security-levels", security_levels.analyze_security_levels, validate_ssp_metadata)
+    registry.register("user-privileges", user_privileges.analyze_user_privileges, validate_ssp_metadata)
+    registry.register("implemented-controls", implemented_controls.analyze_implemented_controls, validate_ssp)
+    registry.register("generate-poam", generate_poam.generate_poam, validate_poam_generator)        
     # Register portscheck without OSCAL validation
-    registry.register_legacy("portscheck", lambda x: portscheck.portscheck(x))
+    registry.register("portscheck", lambda x: portscheck.portscheck(x))
     
     return registry
+
+def execute_command(func: Callable, validator: Optional[Callable], oscal_file: Dict[str, Any], **kwargs) -> None:
+    """Execute a command with validation"""
+    if validator and not validator(oscal_file):
+        print("Command is not valid for this OSCAL file type")
+        return
+    func(oscal_file, **kwargs)
 
 def main():
     # Set up logging
@@ -48,6 +94,8 @@ def main():
                        help="Command to execute")
     parser.add_argument("--debug", action="store_true", 
                        help="Enable debug logging")
+    parser.add_argument("--scan", required=False,
+                    help="Path to scan file (required for generate-poam command)")
     
     args = parser.parse_args()
     
@@ -55,18 +103,31 @@ def main():
         logging.getLogger().setLevel(logging.DEBUG)
     
     try:
+        # Get command details
+        command_result = registry.get_command(args.command)
+        if not command_result:
+            print(f"Command {args.command} not found")
+            return
+        
+        command_func, validator = command_result
+        
+        #Handle portscheck command separately
         if args.command == "portscheck":
-            # For portscheck, pass the file path directly
-            command = registry.get_command("portscheck")
-            command.execute(args.file_path)
+            command_func(args.file_path)
+            return
+            
+        # Validate scan file argument for generate-poam command
+        if args.command == "generate-poam" and not args.scan:
+            parser.error("The generate-poam command requires --scan argument")
+        
+        # Load the OSCAL file
+        oscal_file = core_functionality.load_file(args.file_path)
+            
+        # Execute command
+        if args.command == "generate-poam":
+            execute_command(command_func, validator, oscal_file, scan_file_path=args.scan)
         else:
-            # For OSCAL commands, load and validate the file
-            oscal_file = core_functionality.load_file(args.file_path)
-            command = registry.get_command(args.command)
-            if command and command.validate(oscal_file):
-                command.execute(oscal_file)
-            else:
-                print(f"Command {args.command} is not valid for this OSCAL file type")
+            execute_command(command_func, validator, oscal_file)
             
     except Exception as e:
         logging.error(f"Error processing command: {str(e)}")

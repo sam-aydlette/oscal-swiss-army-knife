@@ -49,6 +49,18 @@ The user-privileges command lists all users, their roles, and authorized privile
 
 The implemented-controls command analyzes and displays details about security control implementations defined in the SSP.
 
+>portscheck
+
+The portscheck commmand lists all components targeted in the scan, open ports, and findings. It uses the scan xml file.
+
+>visualize-components
+
+The visualize-components command generates a report and graphic representing the OSCAL data.
+
+>generate-poam
+
+The generate-poam command generates a POA&M, deriving entries from previous POA&Ms that remain open and new scan findings. It requires an argument --scan
+
 
 REMINDER:  If you wish to use the poams command, you must use a valid OSCAL POAM file.  For the components and roles command, use an OSCAL SSP file.  For the activities command, use the OSCAL Assessment Plan file.  The file type is distinguished by naming convention.
 
@@ -57,7 +69,7 @@ From the terminal, run:
 
 >firefox reports/oscal_report_*.html
 
-### To Create New Commands (Legacy Method) 
+### To Create New Commands
 1. Create a new .py file in the /commands directory with your command function:
 ```python
 # commands/mynewcommand.py
@@ -71,16 +83,12 @@ def setup_registry():
     registry = CommandRegistry()
     
     # Add your new command with appropriate validator
-    registry.register_legacy("mynewcommand", mynewcommand.list_something, validate_ssp)
+    registry.register("mynewcommand", mynewcommand.list_something, validate_ssp)
     
     return registry
 ```
 
-
-### To Create New Commands (New Method)
-To create new commands using the command handler system, follow these steps:
-
-1. Create your command class in commands/command_handler.py:
+2. Create your command class in commands/commands.py:
    - Inherit from the Command base class
    - Implement the validate() method to check if the command can run with the given OSCAL file
    - Implement the execute() method with your command's functionality
@@ -95,25 +103,6 @@ class MyNewCommand(Command):
         # Your command logic here
         print("Executing new command...")
 ```
-2. Register your command in the setup_registry() function in main.py:
-```python
-def setup_registry():
-    registry = CommandRegistry()
-    # Add your new command
-    registry.register("my-new-command", MyNewCommand())
-    return registry
-```
-3. If your command requires utility functions or helper classes:
-
-Add them to commands/utils/ directory
-Create a new module (e.g., commands/utils/my_utils.py)
-Import and use in your command class
-
-
-4. For visualization or report generation:
-
-Use the existing OSCALVisualizer class in commands/utils/visualization.py
-Reports will be generated in the reports/ directory
 
 Remember to add any new dependencies to requirements.txt if your command needs additional Python packages.
 
