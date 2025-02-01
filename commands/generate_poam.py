@@ -31,6 +31,11 @@ def load_existing_poam() -> Dict[str, Any]:
         }
     }
 
+def ensure_docs_directory() -> Path:
+    docs_dir = Path("docs")
+    docs_dir.mkdir(exist_ok=True)
+    return docs_dir
+
 def parse_scan_findings(scan_file_path: str) -> List[Dict[str, Any]]:
     """Parse findings from Nessus scan XML"""
     findings = []
@@ -133,9 +138,11 @@ def generate_poam(oscal_file: Dict[str, Any], scan_file_path: str) -> None:
         # Update the POA&M with new items
         existing_poam["plan-of-action-and-milestones"]["poam-items"] = new_items
         existing_poam["plan-of-action-and-milestones"]["metadata"]["last-modified"] = datetime.now().isoformat()
-        
+       
         # Save the new POA&M
-        output_path = Path("generated_poam.json")
+        docs_dir = ensure_docs_directory()
+        output_path = docs_dir / f"generated_poam_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+        
         with output_path.open('w') as f:
             json.dump(existing_poam, f, indent=2)
         print(f"Generated POA&M saved to {output_path}")
