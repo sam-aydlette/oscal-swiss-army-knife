@@ -15,7 +15,7 @@ def setup_registry():
     """Set up command registry with both old and new commands"""
     registry = CommandRegistry()
     
-    # Register the new-style command
+    # Register the new-style commands
     registry.register("new-roles", NewRolesCommand())
     registry.register("visualize-components", ComponentVisualizerCommand())
     
@@ -24,7 +24,9 @@ def setup_registry():
     registry.register_legacy("components", components.list_components, validate_ssp)
     registry.register_legacy("poams", poams.list_poams, validate_poam)
     registry.register_legacy("activities", activities.list_activities, validate_sap)
-    registry.register_legacy("portscheck", portscheck.portscheck, validate_ssp)
+    
+    # Register portscheck without OSCAL validation
+    registry.register_legacy("portscheck", lambda x: portscheck.portscheck(x))
     
     return registry
 
@@ -37,7 +39,7 @@ def main():
     
     # Parse arguments
     parser = argparse.ArgumentParser(description="OSCAL Swiss Army Knife")
-    parser.add_argument("file_path", help="Path to the JSON file")
+    parser.add_argument("file_path", help="Path to the input file (OSCAL JSON or scan XML)")
     parser.add_argument("command", choices=registry.list_commands(),
                        help="Command to execute")
     parser.add_argument("--debug", action="store_true", 
@@ -49,15 +51,18 @@ def main():
         logging.getLogger().setLevel(logging.DEBUG)
     
     try:
-        # Load the OSCAL file
-        oscal_file = core_functionality.load_file(args.file_path)
-        
-        # Get and execute the command
-        command = registry.get_command(args.command)
-        if command and command.validate(oscal_file):
-            command.execute(oscal_file)
+        if args.command == "portscheck":
+            # For portscheck, pass the file path directly
+            command = registry.get_command("portscheck")
+            command.execute(args.file_path)
         else:
-            print(f"Command {args.command} is not valid for this OSCAL file type")
+            # For OSCAL commands, load and validate the file
+            oscal_file = core_functionality.load_file(args.file_path)
+            command = registry.get_command(args.command)
+            if command and command.validate(oscal_file):
+                command.execute(oscal_file)
+            else:
+                print(f"Command {args.command} is not valid for this OSCAL file type")
             
     except Exception as e:
         logging.error(f"Error processing command: {str(e)}")

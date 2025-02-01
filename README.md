@@ -21,13 +21,17 @@ To use the OSCAL Swiss Army Knife CLI, run:
 >python main.py [docs/oscal_file.json] [command]  
 
 Valid commands:  
->roles //The roles command lists the roles and responsibilities for the system.  It is derived from the SSP.   
+>roles
+The roles command lists the roles and responsibilities for the system.  It is derived from the SSP.   
 
->components //The components command lists the Inventory components for the system.  It is derived from the SSP
+>components
+The components command lists the Inventory components for the system.  It is derived from the SSP
 
->poams //The poams command lists the open POA&M items for the system.  It is derived from the POA&M  
+>poams
+The poams command lists the open POA&M items for the system.  It is derived from the POA&M  
 
->activities //The activities command lists the activities to be performed by the 3PAO.  It is derived from the SAP.  
+>activities
+The activities command lists the activities to be performed by the 3PAO.  It is derived from the SAP.  
 
 
 REMINDER:  If you wish to use the poams command, you must use a valid OSCAL POAM file.  For the components and roles command, use an OSCAL SSP file.  For the activities command, use the OSCAL Assessment Plan file.  The file type is distinguished by naming convention.
