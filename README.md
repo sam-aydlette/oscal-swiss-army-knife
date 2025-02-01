@@ -40,10 +40,61 @@ The activities command lists the activities to be performed by the 3PAO.  It is 
 
 REMINDER:  If you wish to use the poams command, you must use a valid OSCAL POAM file.  For the components and roles command, use an OSCAL SSP file.  For the activities command, use the OSCAL Assessment Plan file.  The file type is distinguished by naming convention.
 
-### To Create New Commands 
+### To Open The Report
+From the terminal, run:
+
+>firefox reports/oscal_report_*.html
+
+### To Create New Commands (Old Method) 
 To create new commands in the OSCAL Swiss Army Knife CLI, you must update the following files:
 - In "main.py" update the main function with a new command argument and import the command
 - In /commands directory create a new .py file with the script you want to execute
 - Place any documents in the docs folder that are required for the command to run
 
+### To Create New Commands (New Method)
+To create new commands using the command handler system, follow these steps:
 
+1. Create your command class in commands/command_handler.py:
+   - Inherit from the Command base class
+   - Implement the validate() method to check if the command can run with the given OSCAL file
+   - Implement the execute() method with your command's functionality
+   
+   Example:
+   ```
+   class MyNewCommand(Command):
+       def validate(self, oscal_file: Dict[str, Any]) -> bool:
+           return "required-section" in oscal_file
+           
+       def execute(self, oscal_file: Dict[str, Any]) -> None:
+           # Your command logic here
+           print("Executing new command...")
+    ```
+2. Register your command in the setup_registry() function in main.py:
+```
+def setup_registry():
+    registry = CommandRegistry()
+    # Add your new command
+    registry.register("my-new-command", MyNewCommand())
+    return registry
+```
+3. If your command requires utility functions or helper classes:
+
+Add them to commands/utils/ directory
+Create a new module (e.g., commands/utils/my_utils.py)
+Import and use in your command class
+
+
+4. For visualization or report generation:
+
+Use the existing OSCALVisualizer class in commands/utils/visualization.py
+Reports will be generated in the reports/ directory
+
+Remember to add any new dependencies to requirements.txt if your command needs additional Python packages.
+
+## License
+
+This work is licensed under a [Creative Commons Attribution 4.0 International License](http://creativecommons.org/licenses/by/4.0/).
+
+![CC BY 4.0][cc-by-shield]
+
+[cc-by-shield]: https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg
