@@ -1,5 +1,7 @@
 def list_components(oscal_file):
-    components = oscal_file["system-security-plan"]["system-implementation"]["inventory-items"]
+    components = oscal_file["system-security-plan"]["system-implementation"][
+        "inventory-items"
+    ]
     for component in components:
         print(f"Description: {component['description']}")
 
