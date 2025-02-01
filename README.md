@@ -33,6 +33,15 @@ The poams command lists the open POA&M items for the system.  It is derived from
 >activities
 The activities command lists the activities to be performed by the 3PAO.  It is derived from the SAP.  
 
+>security-levels
+The security-levels command analyzes and displays the security impact levels and information types defined in the SSP.
+
+>user-privileges
+The user-privileges command lists all users, their roles, and authorized privileges as defined in the SSP.
+
+>implemented-controls
+The implemented-controls command analyzes and displays details about security control implementations defined in the SSP.
+
 
 REMINDER:  If you wish to use the poams command, you must use a valid OSCAL POAM file.  For the components and roles command, use an OSCAL SSP file.  For the activities command, use the OSCAL Assessment Plan file.  The file type is distinguished by naming convention.
 

@@ -1,14 +1,15 @@
 import argparse
 import logging
 from core import core_functionality
-from commands import roles, components, poams, activities, portscheck
+from commands import roles, components, poams, activities, portscheck, implemented_controls, security_levels, user_privileges
 from commands.commands import (
     CommandRegistry, 
     NewRolesCommand,
     ComponentVisualizerCommand,
     validate_ssp,
     validate_poam,
-    validate_sap
+    validate_sap,
+    validate_ssp_metadata
 )
 
 def setup_registry():
@@ -24,6 +25,9 @@ def setup_registry():
     registry.register_legacy("components", components.list_components, validate_ssp)
     registry.register_legacy("poams", poams.list_poams, validate_poam)
     registry.register_legacy("activities", activities.list_activities, validate_sap)
+    registry.register_legacy("security-levels", security_levels.analyze_security_levels, validate_ssp_metadata)
+    registry.register_legacy("user-privileges", user_privileges.analyze_user_privileges, validate_ssp_metadata)
+    registry.register_legacy("implemented-controls", implemented_controls.analyze_implemented_controls, validate_ssp)
     
     # Register portscheck without OSCAL validation
     registry.register_legacy("portscheck", lambda x: portscheck.portscheck(x))

@@ -108,5 +108,14 @@ def validate_poam(oscal_file: Dict[str, Any]) -> bool:
 def validate_sap(oscal_file: Dict[str, Any]) -> bool:
     return "assessment-plan" in oscal_file
 
+def validate_ssp_metadata(oscal_file: Dict[str, Any]) -> bool:
+    """Validates that required metadata sections exist in SSP"""
+    try:
+        return "system-security-plan" in oscal_file and \
+               "metadata" in oscal_file["system-security-plan"] and \
+               "system-implementation" in oscal_file["system-security-plan"]
+    except (KeyError, TypeError):
+        return False
+
 # Initialize registry with all commands
 registry = CommandRegistry()
