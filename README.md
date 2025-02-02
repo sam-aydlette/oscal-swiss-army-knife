@@ -44,14 +44,15 @@ python main.py <oscal_file> <command> [options]
 | `security-levels` | Analyzes security impact levels and information types | SSP |
 | `user-privileges` | Lists user roles and authorized privileges | SSP |
 | `implemented-controls` | Analyzes security control implementations | SSP |
-| `portscheck` | Analyzes open ports and findings from scan results | Scan XML |
+| `portscheck` | Analyzes open ports and findings from scan results | Scan |
 | `visualize-components` | Generates component visualization report | SSP |
-| `generate-poam` | Creates POA&M from scan findings | POA&M/Scan XML |
+| `generate-poam` | Creates POA&M from scan findings | POA&M/Scan |
+| `monthly-report` | Generates a monthly report in markdown | POA&M/Scan |
 
 ### Options
 
 - `--debug`: Enable debug logging
-- `--scan <file>`: Path to scan file (required for generate-poam command)
+- `--scan <file>`: Path to scan file (required for generate-poam and monthly-report command)
 
 ### Examples
 
