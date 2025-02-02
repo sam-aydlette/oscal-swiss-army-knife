@@ -12,7 +12,8 @@ from commands import (
     security_levels, 
     user_privileges, 
     generate_poam,
-    visualize_components
+    visualize_components,
+    monthly_report
 )
 
 class CommandRegistry:
@@ -50,7 +51,6 @@ def validate_ssp_metadata(oscal_file: Dict[str, Any]) -> bool:
     """Validate SSP metadata exists"""
     return "system-security-plan" in oscal_file and "metadata" in oscal_file["system-security-plan"]
 
-
 def validate_poam_generator(oscal_file: Dict[str, Any]) -> bool:
     """Validate POAM generator requirements"""
     return validate_poam(oscal_file)
@@ -59,6 +59,7 @@ def setup_registry():
     """Set up command registry with commands"""
     registry = CommandRegistry()
     
+    registry.register("monthly-report", monthly_report.generate_monthly_report, validate_poam)
     registry.register("visualize-components", visualize_components.visualize_components, validate_ssp)    
     registry.register("roles", roles.list_roles, validate_ssp)
     registry.register("components", components.list_components, validate_ssp)
@@ -95,7 +96,7 @@ def main():
     parser.add_argument("--debug", action="store_true", 
                        help="Enable debug logging")
     parser.add_argument("--scan", required=False,
-                    help="Path to scan file (required for generate-poam command)")
+                    help="Path to scan file (required for generate-poam and monthly-report commands)")
     
     args = parser.parse_args()
     
@@ -111,21 +112,23 @@ def main():
         
         command_func, validator = command_result
         
-        #Handle portscheck command separately
+        # Handle portscheck command separately
         if args.command == "portscheck":
             command_func(args.file_path)
             return
             
-        # Validate scan file argument for generate-poam command
-        if args.command == "generate-poam" and not args.scan:
-            parser.error("The generate-poam command requires --scan argument")
+        # Validate scan file argument for commands that require it
+        if args.command in ["generate-poam", "monthly-report"] and not args.scan:
+            parser.error(f"The {args.command} command requires --scan argument")
         
         # Load the OSCAL file
         oscal_file = core_functionality.load_file(args.file_path)
             
-        # Execute command
+        # Execute command with appropriate arguments
         if args.command == "generate-poam":
             execute_command(command_func, validator, oscal_file, scan_file_path=args.scan)
+        elif args.command == "monthly-report":
+            command_func(oscal_file, args.scan)
         else:
             execute_command(command_func, validator, oscal_file)
             

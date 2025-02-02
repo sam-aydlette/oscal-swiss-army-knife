@@ -1,0 +1,334 @@
+<?xml version="1.0" ?>
+<NessusClientData_v2>
+<Policy><policyName>Internal Network Scan</policyName>
+<Preferences><ServerPreferences><preference><name>max_simult_tcp_sessions</name>
+<value>unlimited</value>
+</preference>
+<preference><name>use_mac_addr</name>
+<value>no</value>
+</preference>
+<preference><name>plugin_set</name>
+<value>16775;16066</value>
+</preference>
+<preference><name>TARGET</name>
+<value>QA3app01,QA3app02,QA3app03,QA3app04,QA3app05,QA3app06,QA3app09</value>
+</preference>
+</ServerPreferences>
+<PluginsPreferences><item><pluginName>amap (NASL wrapper)</pluginName>
+<pluginId>14663</pluginId>
+<fullName>amap (NASL wrapper)[file]:File containing machine readable results :</fullName>
+<preferenceName>File containing machine readable results :</preferenceName>
+<preferenceType>file</preferenceType>
+<preferenceValues></preferenceValues>
+<selectedValue></selectedValue>
+</item>
+</PluginsPreferences>
+</Preferences>
+<FamilySelection><FamilyItem><FamilyName>MacOS X Local Security Checks</FamilyName>
+<Status>enabled</Status>
+</FamilyItem>
+<FamilyItem><FamilyName>Brute force attacks</FamilyName>
+<Status>enabled</Status>
+</FamilyItem>
+</FamilySelection>
+<IndividualPluginSelection><PluginItem><PluginId>34220</PluginId>
+<PluginName>Netstat Portscanner (WMI)</PluginName>
+<Family>Port scanners</Family>
+<Status>enabled</Status>
+</PluginItem>
+<PluginItem><PluginId>14274</PluginId>
+<PluginName>Nessus SNMP Scanner</PluginName>
+<Family>Port scanners</Family>
+<Status>enabled</Status>
+</PluginItem>
+<PluginItem><PluginId>14272</PluginId>
+<PluginName>netstat portscanner (SSH)</PluginName>
+<Family>Port scanners</Family>
+<Status>enabled</Status>
+</PluginItem>
+<PluginItem><PluginId>10180</PluginId>
+<PluginName>Ping the remote host</PluginName>
+<Family>Port scanners</Family>
+<Status>enabled</Status>
+</PluginItem>
+<PluginItem><PluginId>11219</PluginId>
+<PluginName>Nessus SYN scanner</PluginName>
+<Family>Port scanners</Family>
+<Status>enabled</Status>
+</PluginItem>
+</IndividualPluginSelection>
+</Policy>
+<Report name="2459_Coinstar" xmlns:cm="http://www.nessus.org/cm">
+<ReportHost name="qa3app09"><HostProperties>
+<tag name="HOST_END">Mon Jul  1 11:40:48 2013</tag>
+<tag name="patch-summary-total-cves">1</tag>
+<tag name="system-type">general-purpose</tag>
+<tag name="operating-system">Microsoft Windows Server 2008 R2 Standard Service Pack 1</tag>
+<tag name="mac-address">00:50:56:81:01:e3</tag>
+<tag name="traceroute-hop-1">10.31.112.29</tag>
+<tag name="traceroute-hop-0">172.16.138.2</tag>
+<tag name="host-ip">10.31.112.29</tag>
+<tag name="host-fqdn">qa3app09</tag>
+<tag name="netbios-name">QA3APP09</tag>
+<tag name="HOST_START">Mon Jul  1 11:33:11 2013</tag>
+</HostProperties>
+<ReportItem port="0" svc_name="general" protocol="tcp" severity="0" pluginID="19506" pluginName="Nessus Scan Information" pluginFamily="Settings">
+<description>This script displays, for each tested host, information about the scan itself :
+
+ - The version of the plugin set
+ - The type of plugin feed (HomeFeed or ProfessionalFeed)
+ - The version of the Nessus Engine
+ - The port scanner(s) used
+ - The port range scanned
+ - Whether credentialed or third-party patch management    checks are possible
+ - The date of the scan
+ - The duration of the scan
+ - The number of hosts scanned in parallel
+ - The number of checks done in parallel</description>
+<fname>scan_info.nasl</fname>
+<plugin_modification_date>2013/05/31</plugin_modification_date>
+<plugin_name>Nessus Scan Information</plugin_name>
+<plugin_publication_date>2005/08/26</plugin_publication_date>
+<plugin_type>summary</plugin_type>
+<risk_factor>None</risk_factor>
+<script_version>$Revision: 1.59 $</script_version>
+<solution>n/a</solution>
+<synopsis>Information about the Nessus scan.</synopsis>
+<plugin_output>Information about this scan : 
+
+Nessus version : 5.2.1
+Plugin feed version : 201306260615
+Type of plugin feed : HomeFeed (Non-commercial use only)
+Scanner IP : 172.16.138.174
+Port scanner(s) : nessus_syn_scanner 
+Port range : default
+Thorough tests : no
+Experimental tests : no
+Paranoia level : 1
+Report Verbosity : 1
+Safe checks : yes
+Optimize the test : yes
+Credentialed checks : no
+Patch management checks : None
+CGI scanning : disabled
+Web application tests : disabled
+Max hosts : 80
+Max checks : 5
+Recv timeout : 5
+Backports : None
+Allow post-scan editing: Yes
+Scan Start Date : 2013/7/1 11:33
+Scan duration : 453 sec
+</plugin_output>
+</ReportItem>
+<ReportItem port="3389" svc_name="msrdp" protocol="tcp" severity="2" pluginID="58453" pluginName="Terminal Services Doesn&apos;t Use Network Level Authentication (NLA)" pluginFamily="Misc.">
+<cpe>cpe:/o:microsoft:windows
+cpe:/a:microsoft:remote_desktop_protocol</cpe>
+<cvss_base_score>4.3</cvss_base_score>
+<cvss_vector>CVSS2#AV:N/AC:M/Au:N/C:P/I:N/A:N</cvss_vector>
+<description>The remote Terminal Services is not configured to use Network Level Authentication (NLA). NLA uses the Credential Security Support Provider (CredSSP) protocol to perform strong server authentication either through TLS/SSL or Kerberos mechanisms, which protect against man-in-the-middle attacks. In addition to improving authentication, NLA also helps protect the remote computer from malicious users and software by completing user authentication before a full RDP connection is established.</description>
+<fname>rdp_credssp_detect.nbin</fname>
+<plugin_modification_date>2013/04/22</plugin_modification_date>
+<plugin_name>Terminal Services Doesn&apos;t Use Network Level Authentication (NLA)</plugin_name>
+<plugin_publication_date>2012/03/23</plugin_publication_date>
+<plugin_type>remote</plugin_type>
+<risk_factor>Medium</risk_factor>
+<script_version>$Revision: 1.9 $</script_version>
+<see_also>http://technet.microsoft.com/en-us/library/cc732713.aspx
+http://www.nessus.org/u?e2628096</see_also>
+<solution>Enable Network Level Authentication (NLA) on the remote RDP server. This is generally done on the &apos;Remote&apos; tab of the &apos;System&apos; settings on Windows.</solution>
+<synopsis>The remote Terminal Services doesn&apos;t use Network Level Authentication.</synopsis>
+</ReportItem>
+<ReportItem port="3389" svc_name="msrdp" protocol="tcp" severity="3" pluginID="30218" pluginName="Terminal Services Encryption Level is not FIPS-140 Compliant" pluginFamily="Misc.">
+<cvss_base_score>2.6</cvss_base_score>
+<cvss_vector>CVSS2#AV:N/AC:H/Au:N/C:P/I:N/A:N</cvss_vector>
+<description>The encryption setting used by the remote Terminal Services service is not FIPS-140 compliant.</description>
+<fname>fips_rdp.nbin</fname>
+<plugin_modification_date>2013/04/22</plugin_modification_date>
+<plugin_name>Terminal Services Encryption Level is not FIPS-140 Compliant</plugin_name>
+<plugin_publication_date>2008/02/11</plugin_publication_date>
+<plugin_type>remote</plugin_type>
+<risk_factor>Low</risk_factor>
+<script_version>$Revision: 1.9 $</script_version>
+<solution>Change RDP encryption level to :
+
+ 4. FIPS Compliant</solution>
+<synopsis>The remote host is not FIPS-140 compliant.</synopsis>
+<plugin_output>
+The terminal services encryption level is set to :
+
+2. Medium (Client Compatible)</plugin_output>
+</ReportItem>
+<ReportItem port="445" svc_name="cifs" protocol="tcp" severity="2" pluginID="57608" pluginName="SMB Signing Disabled" pluginFamily="Misc.">
+<cpe>cpe:/o:microsoft:windows</cpe>
+<cvss_base_score>5.0</cvss_base_score>
+<cvss_vector>CVSS2#AV:N/AC:L/Au:N/C:N/I:P/A:N</cvss_vector>
+<description>Signing is disabled on the remote SMB server.  This can allow man-in-the-middle attacks against the SMB server.</description>
+<fname>smb_signing_disabled.nasl</fname>
+<plugin_modification_date>2012/03/05</plugin_modification_date>
+<plugin_name>SMB Signing Disabled</plugin_name>
+<plugin_publication_date>2012/01/19</plugin_publication_date>
+<plugin_type>remote</plugin_type>
+<risk_factor>Medium</risk_factor>
+<script_version>$Revision: 1.7 $</script_version>
+<see_also>http://support.microsoft.com/kb/887429
+http://www.nessus.org/u?74b80723
+http://www.samba.org/samba/docs/man/manpages-3/smb.conf.5.html</see_also>
+<solution>Enforce message signing in the host&apos;s configuration.  On Windows, this is found in the Local Security Policy.  On Samba, the setting is called &apos;server signing&apos;.  See the &apos;see also&apos; links for further details.</solution>
+<synopsis>Signing is disabled on the remote SMB server.</synopsis>
+<vuln_publication_date>2012/01/17</vuln_publication_date>
+</ReportItem>
+<ReportItem port="3389" svc_name="msrdp" protocol="tcp" severity="2" pluginID="18405" pluginName="Microsoft Windows Remote Desktop Protocol Server Man-in-the-Middle Weakness" pluginFamily="Windows">
+<bid>13818</bid>
+<cve>CVE-2005-1794</cve>
+<cvss_base_score>5.1</cvss_base_score>
+<cvss_temporal_score>4.6</cvss_temporal_score>
+<cvss_temporal_vector>CVSS2#E:F/RL:W/RC:ND</cvss_temporal_vector>
+<cvss_vector>CVSS2#AV:N/AC:H/Au:N/C:P/I:P/A:P</cvss_vector>
+<description>The remote version of the Remote Desktop Protocol Server (Terminal Service) is vulnerable to a man-in-the-middle (MiTM) attack. The RDP client makes no effort to validate the identity of the server when setting up encryption. An attacker with the ability to intercept traffic from the RDP server can establish encryption with the client and server without being detected. A MiTM attack of this nature would allow the attacker to obtain any sensitive information transmitted, including authentication credentials.
+
+This flaw exists because the RDP server stores a hardcoded RSA private key in the mstlsapi.dll library. Any local user with access to this file (on any Windows system) can retrieve the key and use it for this attack.</description>
+<exploit_available>true</exploit_available>
+<exploitability_ease>Exploits are available</exploitability_ease>
+<fname>tssvc_mim.nasl</fname>
+<osvdb>17131</osvdb>
+<plugin_modification_date>2012/03/30</plugin_modification_date>
+<plugin_name>Microsoft Windows Remote Desktop Protocol Server Man-in-the-Middle Weakness</plugin_name>
+<plugin_publication_date>2005/06/01</plugin_publication_date>
+<plugin_type>remote</plugin_type>
+<risk_factor>Medium</risk_factor>
+<script_version>$Revision: 1.23 $</script_version>
+<see_also>http://www.oxid.it/downloads/rdp-gbu.pdf
+http://www.nessus.org/u?e2628096
+http://technet.microsoft.com/en-us/library/cc782610.aspx</see_also>
+<solution>- Force the use of SSL as a transport layer for this service if supported, or/and
+- Select the &apos;Allow connections only from computers running Remote Desktop with Network Level Authentication&apos; setting if it is available.</solution>
+<synopsis>It may be possible to get access to the remote host.</synopsis>
+<vuln_publication_date>2005/05/28</vuln_publication_date>
+<xref>OSVDB:17131</xref>
+</ReportItem>
+<ReportItem port="3389" svc_name="msrdp" protocol="tcp" severity="2" pluginID="57690" pluginName="Terminal Services Encryption Level is Medium or Low" pluginFamily="Misc.">
+<cvss_base_score>4.3</cvss_base_score>
+<cvss_vector>CVSS2#AV:N/AC:M/Au:N/C:P/I:N/A:N</cvss_vector>
+<description>The remote Terminal Services service is not configured to use strong cryptography. 
+
+Using weak cryptography with this service may allow an attacker to eavesdrop on the communications more easily and obtain screenshots and/or keystrokes.</description>
+<fname>rdp_weak_crypto.nbin</fname>
+<plugin_modification_date>2013/04/22</plugin_modification_date>
+<plugin_name>Terminal Services Encryption Level is Medium or Low</plugin_name>
+<plugin_publication_date>2012/01/25</plugin_publication_date>
+<plugin_type>remote</plugin_type>
+<risk_factor>Medium</risk_factor>
+<script_version>$Revision: 1.6 $</script_version>
+<solution>Change RDP encryption level to one of :
+
+ 3. High
+
+ 4. FIPS Compliant</solution>
+<synopsis>The remote host is using weak cryptography.</synopsis>
+<plugin_output>
+The terminal services encryption level is set to :
+
+2. Medium</plugin_output>
+</ReportItem>
+<ReportItem port="3389" svc_name="msrdp" protocol="tcp" severity="3" pluginID="30218" pluginName="Terminal Services Encryption Level is not FIPS-140 Compliant" pluginFamily="Misc.">
+<cvss_base_score>2.6</cvss_base_score>
+<cvss_vector>CVSS2#AV:N/AC:H/Au:N/C:P/I:N/A:N</cvss_vector>
+<description>The encryption setting used by the remote Terminal Services service is not FIPS-140 compliant.</description>
+<fname>fips_rdp.nbin</fname>
+<plugin_modification_date>2013/04/22</plugin_modification_date>
+<plugin_name>Terminal Services Encryption Level is not FIPS-140 Compliant</plugin_name>
+<plugin_publication_date>2008/02/11</plugin_publication_date>
+<plugin_type>remote</plugin_type>
+<risk_factor>Low</risk_factor>
+<script_version>$Revision: 1.9 $</script_version>
+<solution>Change RDP encryption level to :
+
+ 4. FIPS Compliant</solution>
+<synopsis>The remote host is not FIPS-140 compliant.</synopsis>
+<plugin_output>
+The terminal services encryption level is set to :
+
+2. Medium (Client Compatible)</plugin_output>
+</ReportItem>
+<ReportItem port="445" svc_name="cifs" protocol="tcp" severity="0" pluginID="11011" pluginName="Microsoft Windows SMB Service Detection" pluginFamily="Windows">
+<description>The remote service understands the CIFS (Common Internet File System) or Server Message Block (SMB) protocol, used to provide shared access to files, printers, etc between nodes on a network.</description>
+<fname>cifs445.nasl</fname>
+<plugin_modification_date>2012/01/31</plugin_modification_date>
+<plugin_name>Microsoft Windows SMB Service Detection</plugin_name>
+<plugin_publication_date>2002/06/05</plugin_publication_date>
+<plugin_type>remote</plugin_type>
+<risk_factor>None</risk_factor>
+<script_version>$Revision: 1.37 $</script_version>
+<solution>n/a</solution>
+<synopsis>A file / print sharing service is listening on the remote host.</synopsis>
+<plugin_output>
+A CIFS server is running on this port.
+</plugin_output>
+</ReportItem>
+</ReportHost>
+<ReportHost name="qa3app02"><HostProperties>
+<tag name="HOST_END">Mon Jul  1 11:54:48 2013</tag>
+<tag name="patch-summary-total-cves">1</tag>
+<tag name="system-type">general-purpose</tag>
+<tag name="operating-system">Microsoft Windows Server 2008 R2 Standard Service Pack 1</tag>
+<tag name="mac-address">00:50:56:81:01:db</tag>
+<tag name="traceroute-hop-1">10.31.112.22</tag>
+<tag name="traceroute-hop-0">172.16.138.2</tag>
+<tag name="host-ip">10.31.112.22</tag>
+<tag name="host-fqdn">qa3app02</tag>
+<tag name="netbios-name">QA3APP02</tag>
+<tag name="HOST_START">Mon Jul  1 11:33:11 2013</tag>
+</HostProperties>
+<ReportItem port="0" svc_name="general" protocol="tcp" severity="0" pluginID="19506" pluginName="Nessus Scan Information" pluginFamily="Settings">
+<description>This script displays, for each tested host, information about the scan itself :
+
+ - The version of the plugin set
+ - The type of plugin feed (HomeFeed or ProfessionalFeed)
+ - The version of the Nessus Engine
+ - The port scanner(s) used
+ - The port range scanned
+ - Whether credentialed or third-party patch management    checks are possible
+ - The date of the scan
+ - The duration of the scan
+ - The number of hosts scanned in parallel
+ - The number of checks done in parallel</description>
+<fname>scan_info.nasl</fname>
+<plugin_modification_date>2013/05/31</plugin_modification_date>
+<plugin_name>Nessus Scan Information</plugin_name>
+<plugin_publication_date>2005/08/26</plugin_publication_date>
+<plugin_type>summary</plugin_type>
+<risk_factor>None</risk_factor>
+<script_version>$Revision: 1.59 $</script_version>
+<solution>n/a</solution>
+<synopsis>Information about the Nessus scan.</synopsis>
+<plugin_output>Information about this scan : 
+
+Nessus version : 5.2.1
+Plugin feed version : 201306260615
+Type of plugin feed : HomeFeed (Non-commercial use only)
+Scanner IP : 172.16.138.174
+Port scanner(s) : nessus_syn_scanner 
+Port range : default
+Thorough tests : no
+Experimental tests : no
+Paranoia level : 1
+Report Verbosity : 1
+Safe checks : yes
+Optimize the test : yes
+Credentialed checks : no
+Patch management checks : None
+CGI scanning : disabled
+Web application tests : disabled
+Max hosts : 80
+Max checks : 5
+Recv timeout : 5
+Backports : None
+Allow post-scan editing: Yes
+Scan Start Date : 2013/7/1 11:33
+Scan duration : 1293 sec
+</plugin_output>
+</ReportItem>
+</ReportHost>
+</Report>
+</NessusClientData_v2>
