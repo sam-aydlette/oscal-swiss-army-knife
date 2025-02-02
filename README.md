@@ -1,6 +1,6 @@
 # OSCAL Swiss Army Knife
 
-A command-line interface (CLI) tool for analyzing and manipulating OSCAL (Open Security Controls Assessment Language) formatted data.
+A command-line interface (CLI) tool for analyzing and manipulating OSCAL (Open Security Controls Assessment Language) formatted data along with associated machine-generated security data.
 
 ## Prerequisites
 
@@ -93,22 +93,6 @@ def setup_registry():
     registry.register("mynewcommand", mynewcommand.list_something, validate_ssp)
     
     return registry
-```
-
-3. Create your command class in `commands/commands.py`:
-   * Inherit from the Command base class
-   * Implement the validate() method to check if the command can run with the given OSCAL file
-   * Implement the execute() method with your command's functionality
-
-Example:
-```python
-class MyNewCommand(Command):
-    def validate(self, oscal_file: Dict[str, Any]) -> bool:
-        return "required-section" in oscal_file
-        
-    def execute(self, oscal_file: Dict[str, Any]) -> None:
-        # Your command logic here
-        print("Executing new command...")
 ```
 
 **Note:** Remember to add any new dependencies to `requirements.txt` if your command needs additional Python packages.
